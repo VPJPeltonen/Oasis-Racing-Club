@@ -19,9 +19,6 @@ public class GameControl : MonoBehaviour
     void Start()
     {
         nextGate = 0;
-        startTime = Time.time;
-        countdownTime = Time.time;
-        currentTimeLimit = 10f;
     }
 
     void Update()
@@ -63,6 +60,15 @@ public class GameControl : MonoBehaviour
         }
         string timerTime = minutes + ":" + seconds;  
         return timerTime;
+    }
+
+    public void StartGame(){
+        active = true;
+        playerShip.Active = true;
+        playerBall.Active = true;
+        startTime = Time.time;
+        countdownTime = Time.time;
+        currentTimeLimit = 10f;
     }
 
     private void GameOver(){
