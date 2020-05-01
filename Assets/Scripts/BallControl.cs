@@ -6,7 +6,7 @@ public class BallControl : MonoBehaviour
 {
     public Transform target;
     private bool dashInput;
-    private float speed = 2.0f;
+    private float speed = 4.0f;
     private float turnSpeed = 5f;
     private float xDir,yDir;
     // Start is called before the first frame update

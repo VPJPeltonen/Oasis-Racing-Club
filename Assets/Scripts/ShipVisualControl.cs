@@ -16,7 +16,7 @@ public class ShipVisualControl : MonoBehaviour
     void FixedUpdate()
     {
         //transform.LookAt(steeringBall);
-        transform.position = new Vector3(target.position.x, transform.position.y, target.position.z);
+        transform.position = new Vector3(target.position.x, target.position.y+1f, target.position.z);
 
         float turnInput = Input.GetAxis ("Horizontal");
         //transform.position += -transform.right * turnInput * turnSpeed;
