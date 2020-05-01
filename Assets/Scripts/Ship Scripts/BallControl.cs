@@ -8,9 +8,13 @@ public class BallControl : MonoBehaviour
     private bool dashInput;
     private float speed = 4.0f;
     private float turnSpeed = 5f;
+    private bool active = true;
+
+    public bool Active { get => active; set => active = value; }
 
     void FixedUpdate()
     {
+        if(!active){return;}
         Vector3 targetDir = target.position - transform.position;
         Rigidbody body = gameObject.GetComponent<Rigidbody>();
         float moveVertical = Input.GetAxis ("Vertical");
