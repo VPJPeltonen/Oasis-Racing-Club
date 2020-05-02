@@ -10,6 +10,7 @@ public class GameControl : MonoBehaviour
     public UIControl UI;
     public BallControl playerBall;
     public ShipVisualControl playerShip;
+    public ArrowControl arrow;
     private int nextGate;
     private float startTime, countdownTime, currentTimeLimit;
     private bool active = true;
@@ -51,6 +52,21 @@ public class GameControl : MonoBehaviour
         }
     }
 
+    public CheckPointControl GetNextGate(){
+        return checkPoints[nextGate];
+    }
+
+    public void StartGame(){
+        active = true;
+        playerShip.Active = true;
+        playerBall.Active = true;
+        arrow.gameObject.SetActive(true);
+        arrow.Active = true;
+        startTime = Time.time;
+        countdownTime = Time.time;
+        currentTimeLimit = 10f;
+    }
+
     private string getTime(float selectedTime){
         string minutes = ((int) selectedTime/60).ToString();
         float secondsFloat = (float)selectedTime % 60;
@@ -62,19 +78,11 @@ public class GameControl : MonoBehaviour
         return timerTime;
     }
 
-    public void StartGame(){
-        active = true;
-        playerShip.Active = true;
-        playerBall.Active = true;
-        startTime = Time.time;
-        countdownTime = Time.time;
-        currentTimeLimit = 10f;
-    }
-
     private void GameOver(){
         active = false;
         playerShip.Active = false;
         playerBall.Active = false;
+        arrow.gameObject.SetActive(false);
         UI.GameOver();
     }
 }
