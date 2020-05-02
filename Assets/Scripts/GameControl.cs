@@ -11,15 +11,17 @@ public class GameControl : MonoBehaviour
     public BallControl playerBall;
     public ShipVisualControl playerShip;
     public ArrowControl arrow;
-    private int nextGate;
+    private int nextGate, gatesPassed;
     private float startTime, countdownTime, currentTimeLimit;
     private bool active = true;
 
     public bool Active { get => active; set => active = value; }
+    public int GatesPassed {get => gatesPassed;}
 
     void Start()
     {
         nextGate = 0;
+        gatesPassed = 0;
     }
 
     void Update()
@@ -40,7 +42,8 @@ public class GameControl : MonoBehaviour
     public void GateActivated(CheckPointControl gate){
         if(gate == checkPoints[nextGate]){
             countdownTime = Time.time;
-            currentTimeLimit = 10f;
+            float bonusTime = Mathf.Clamp(8f * (1-gatesPassed/100), 1f, 8f);
+            currentTimeLimit += (8f * (1-gatesPassed/100));
             Debug.Log("correct gate");
             if (nextGate < checkPoints.Length-1){
                 nextGate += 1;
