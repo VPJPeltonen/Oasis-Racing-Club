@@ -5,20 +5,22 @@ using UnityEngine;
 public class BallControl : MonoBehaviour
 {
     public Transform target;
-    private bool dashInput;
-    private float speed = 4.0f;
-    private float turnSpeed = 5f;
-    private bool active = true;
+    protected bool dashInput;
+    public float speed = 5.0f;
+    protected bool active = false;
 
     public bool Active { get => active; set => active = value; }
 
     void FixedUpdate()
     {
         if(!active){return;}
+        float moveVertical = Input.GetAxis ("Vertical");
+        MoveShip(moveVertical);
+    }
+
+    protected void MoveShip(float movePower){
         Vector3 targetDir = target.position - transform.position;
         Rigidbody body = gameObject.GetComponent<Rigidbody>();
-        float moveVertical = Input.GetAxis ("Vertical");
-        Vector3 movement = new Vector3 (0.0f, 0.0f, moveVertical);
-        body.AddForce (moveVertical * speed * targetDir);
+        body.AddForce (movePower * speed * targetDir);
     }
 }

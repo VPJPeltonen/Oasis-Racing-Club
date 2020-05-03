@@ -5,16 +5,20 @@ using UnityEngine;
 public class ShipVisualControl : MonoBehaviour
 {
     public Transform target, steeringBall;
-    private float turnSpeed = 0.05f; 
-    private bool active = true;
+    protected float turnSpeed = 3f; 
+    protected bool active = false;
 
     public bool Active { get => active; set => active = value; }
 
     void FixedUpdate()
     {
         if(!active){return;}
-        transform.position = new Vector3(target.position.x, target.position.y+1f, target.position.z);
         float turnInput = Input.GetAxis ("Horizontal");
-        transform.Rotate(Vector3.up * turnInput);
+        transform.Rotate(Vector3.up * turnInput * turnSpeed);
+        MaintainPosition();
+    }
+
+    protected void MaintainPosition(){
+        transform.position = new Vector3(target.position.x, target.position.y+1f, target.position.z);
     }
 }

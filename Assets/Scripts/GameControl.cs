@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameControl : MonoBehaviour
 {
     public CheckPointControl[] checkPoints;
+    public AIControl[] AIShips;
     public UIControl UI;
     public BallControl playerBall;
     public ShipVisualControl playerShip;
     public ArrowControl arrow;
     private int nextGate, gatesPassed;
     private float startTime, countdownTime, currentTimeLimit;
-    private bool active = true;
+    private bool active = false;
 
     public bool Active { get => active; set => active = value; }
     public int GatesPassed {get => gatesPassed;}
@@ -41,10 +43,11 @@ public class GameControl : MonoBehaviour
 
     public void GateActivated(CheckPointControl gate){
         if(gate == checkPoints[nextGate]){
-            countdownTime = Time.time;
-            float bonusTime = Mathf.Clamp(8f * (1-gatesPassed/100), 1f, 8f);
-            currentTimeLimit += (8f * (1-gatesPassed/100));
-            Debug.Log("correct gate");
+            gatesPassed += 1;
+            UI.UpdateGatesAmount(gatesPassed);
+            float bonusTime = Mathf.Clamp(5f * (1-(gatesPassed*2f)/100f), 1f, 8f);
+            currentTimeLimit += bonusTime;
+            Debug.Log("correct gate, time added");
             if (nextGate < checkPoints.Length-1){
                 nextGate += 1;
             }else{
@@ -55,6 +58,12 @@ public class GameControl : MonoBehaviour
         }
     }
 
+    public void RestartMap(){
+        Scene thisScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(thisScene.name);
+
+    }
+
     public CheckPointControl GetNextGate(){
         return checkPoints[nextGate];
     }
@@ -63,11 +72,14 @@ public class GameControl : MonoBehaviour
         active = true;
         playerShip.Active = true;
         playerBall.Active = true;
+        foreach(AIControl AI in AIShips){
+            AI.SetActiveStatus(true);
+        }
         arrow.gameObject.SetActive(true);
         arrow.Active = true;
         startTime = Time.time;
         countdownTime = Time.time;
-        currentTimeLimit = 10f;
+        currentTimeLimit = 5f;
     }
 
     private string getTime(float selectedTime){
@@ -85,7 +97,10 @@ public class GameControl : MonoBehaviour
         active = false;
         playerShip.Active = false;
         playerBall.Active = false;
+        /*foreach(AIControl AI in AIShips){
+            AI.SetActiveStatus(false);
+        }*/
         arrow.gameObject.SetActive(false);
-        UI.GameOver();
+        UI.GameOver(gatesPassed);
     }
 }
